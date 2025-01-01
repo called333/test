@@ -3,11 +3,12 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/called333/test/refs/heads/main/addunlistedpls"))()]])
 --
 local rStorage = game:WaitForChild("ReplicatedStorage")
-local Player = game.Players.LocalPlayer
+local Player = game:WaitForChild("Players").LocalPlayer
+local Rerolls = rStorage:WaitForChild("rerolls")
 local Character = Player.Character or Player.CharacterAdded:Wait()
-local Slots = rStorage.rerolls.Slots
-local Head = Player.Character.Head
-local Backpack = Player.Backpack
+local Slots = Rerolls:WaitForChild("Slots")
+local Head = Character:WaitForChild("Head")
+local Backpack = Player:WaitForChild("Backpack")
 local TeleportService = game:GetService("TeleportService")
 local Lobby = 12276235857
 --
@@ -20,7 +21,7 @@ local function CopySlot()
         end)
     end)
 end
-local ColorRemote = rStorage:WaitForChild("rerolls"):WaitForChild("aurareroll")
+local ColorRemote = Rerolls:WaitForChild("aurareroll")
 local DesiredColor = Color3.new(0, 0, 0)
 local DesiredColorRange = 3
 local PlayerColor = {
@@ -38,7 +39,7 @@ local ColorConnection
            math.clamp(BV, DesiredColorMin.B, DesiredColorMax.B) == BV
 end
 --
-repeat task.wait(.1) until Character.RankSystem.Yen.Value > 300000
+repeat task.wait(.1) until Character:WaitForChild("RankSystem"):WaitForChild("Yen").Value > 300000
 task.wait(2.5)
 --
 local Counter = 0
