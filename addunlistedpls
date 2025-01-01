@@ -1,0 +1,60 @@
+if not game:IsLoaded() then game.Loaded:Wait() end
+--
+queue_on_teleport([[loadstring(game:HttpGet("https://gist.githubusercontent.com/called333/348006c524b9c46f14e7a74e94a73f3f/raw/a5f37279ba675f5615dde8d1a2fc18f0f545c61b/gistfile1.txt"))()]])
+--
+local rStorage = game:WaitForChild("ReplicatedStorage")
+local Player = game.Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local Slots = rStorage.rerolls.Slots
+local Head = Player.Character.Head
+local Backpack = Player.Backpack
+local TeleportService = game:GetService("TeleportService")
+local Lobby = 12276235857
+--
+local function CopySlot()
+    Head:Destroy()
+    Player.CharacterAdded:Once(function()
+        Slots:FireServer(1)
+        task.delay(0.25, function()
+            TeleportService:Teleport(Lobby)
+        end)
+    end)
+end
+local ColorRemote = rStorage:WaitForChild("rerolls"):WaitForChild("aurareroll")
+local DesiredColor = Color3.new(0, 0, 0)
+local DesiredColorRange = 3
+local PlayerColor = {
+    R = Character.AuraColour.Red,
+    G = Character.AuraColour.Green,
+    B = Character.AuraColour.Blue
+}
+local ColorConnection
+    local function ColorCheck()
+    local DesiredColorMin = Color3.fromRGB(DesiredColor.R - DesiredColorRange, DesiredColor.G - DesiredColorRange, DesiredColor.B - DesiredColorRange)
+    local DesiredColorMax = Color3.fromRGB(DesiredColor.R + DesiredColorRange, DesiredColor.G + DesiredColorRange, DesiredColor.B + DesiredColorRange)
+    local RV, GV, BV = PlayerColor.R.Value, PlayerColor.G.Value, PlayerColor.B.Value
+    return math.clamp(RV, DesiredColorMin.R, DesiredColorMax.R) == RV and 
+           math.clamp(GV, DesiredColorMin.G, DesiredColorMax.G) == GV and 
+           math.clamp(BV, DesiredColorMin.B, DesiredColorMax.B) == BV
+end
+--
+repeat task.wait(.1) until Character.RankSystem.Yen.Value > 300000
+task.wait(2.5)
+--
+local Counter = 0
+ColorConnection = PlayerColor.R:GetPropertyChangedSignal("Value"):Connect(function()
+    if Character.RankSystem.Yen.Value < 300000 then
+        CopySlot()
+        ColorConnection:Disconnect()
+        return
+    end
+    if ColorCheck() then
+        warn("Color: "..Counter)
+        warn(PlayerColor.R.Value, PlayerColor.G.Value, PlayerColor.B.Value)
+        ColorConnection:Disconnect()
+        return
+    end
+    Counter += 1
+    ColorRemote:FireServer()
+end)
+ColorRemote:FireServer()
