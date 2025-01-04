@@ -12,7 +12,10 @@ local Backpack = Player:WaitForChild("Backpack")
 local TeleportService = game:GetService("TeleportService")
 local Lobby = 12276235857
 --
+local Initiated = false
 local function CopySlot()
+    if Initiated then return end
+    Initiated = true
     Head:Destroy()
     Player.CharacterAdded:Once(function()
         Slots:FireServer(1)
@@ -22,6 +25,8 @@ local function CopySlot()
     end)
 end
 local ColorRemote = Rerolls:WaitForChild("aurareroll")
+local SpecRemote = Rerolls:WaitForChild("specreroll")
+
 local DesiredColor = Color3.new(255, 0, 0)
 local DesiredColorRange = 10
 local PlayerColor = {
@@ -30,7 +35,9 @@ local PlayerColor = {
     B = Character.AuraColour.Blue
 }
 local ColorConnection
-    local function ColorCheck()
+local SpecConnection
+
+local function ColorCheck()
     local DesiredColorMin = Color3.fromRGB(DesiredColor.R - DesiredColorRange, DesiredColor.G - DesiredColorRange, DesiredColor.B - DesiredColorRange)
     local DesiredColorMax = Color3.fromRGB(DesiredColor.R + DesiredColorRange, DesiredColor.G + DesiredColorRange, DesiredColor.B + DesiredColorRange)
     local RV, GV, BV = PlayerColor.R.Value, PlayerColor.G.Value, PlayerColor.B.Value
@@ -42,20 +49,45 @@ end
 repeat task.wait(.1) until Character:WaitForChild("RankSystem"):WaitForChild("Yen").Value > 300000
 task.wait(2.5)
 --
-local Counter = 0
+local Counter1 = 0
+local Counter2 = 0
+
+local function DisconnectAll()
+    ColorConnection:Disconnect()
+    SpecConnection:Disconnect()
+end
+
 ColorConnection = PlayerColor.R:GetPropertyChangedSignal("Value"):Connect(function()
-    if Character.RankSystem.Yen.Value < 200000 then
-        CopySlot()
-        ColorConnection:Disconnect()
-        return
-    end
     if ColorCheck() then
-        warn("Color: "..Counter)
+        warn("Color: "..Counter1)
         warn(PlayerColor.R.Value, PlayerColor.G.Value, PlayerColor.B.Value)
         ColorConnection:Disconnect()
         return
     end
-    Counter += 1
+    if Character.RankSystem.Yen.Value < 300000 then
+        DisconnectAll()
+        CopySlot()
+        return
+    end
+    Counter1 += 1
     ColorRemote:FireServer()
 end)
+
+local SelectedWeapon = "Nagi"
+SpecConnection = Player.Backpack.ChildAdded:Connect(function(child)
+    if child.Name == SelectedWeapon then
+        warn("Weapon: "..Counter2)
+        WeaponConnection:Disconnect()
+        return
+    end
+    if Character.RankSystem.Yen.Value < 300000 then
+        DisconnectAll()
+        CopySlot()
+        return
+    end
+    Counter2 += 1
+    SpecRemote:FireServer()
+end
+
+SpecRemote:FireServer()
 ColorRemote:FireServer()
