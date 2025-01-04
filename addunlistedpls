@@ -53,8 +53,14 @@ local Counter1 = 0
 local Counter2 = 0
 
 local function DisconnectAll()
-    ColorConnection:Disconnect()
-    SpecConnection:Disconnect()
+    if ColorConnection then
+        ColorConnection:Disconnect()
+        ColorConnection = nil
+    end
+    if SpecConnection then
+        SpecConnection:Disconnect()
+        SpecConnection = nil
+    end
 end
 
 ColorConnection = PlayerColor.R:GetPropertyChangedSignal("Value"):Connect(function()
