@@ -93,7 +93,7 @@ SpecConnection = Player.Backpack.ChildAdded:Connect(function(child)
     end
     Counter2 += 1
     SpecRemote:FireServer()
-end
+end)
 
 SpecRemote:FireServer()
 ColorRemote:FireServer()
