@@ -23,7 +23,7 @@ local function CopySlot()
 end
 local ColorRemote = Rerolls:WaitForChild("aurareroll")
 local DesiredColor = Color3.new(255, 0, 0)
-local DesiredColorRange = 7
+local DesiredColorRange = 10
 local PlayerColor = {
     R = Character.AuraColour.Red,
     G = Character.AuraColour.Green,
@@ -44,7 +44,7 @@ task.wait(2.5)
 --
 local Counter = 0
 ColorConnection = PlayerColor.R:GetPropertyChangedSignal("Value"):Connect(function()
-    if Character.RankSystem.Yen.Value < 500000 then
+    if Character.RankSystem.Yen.Value < 200000 then
         CopySlot()
         ColorConnection:Disconnect()
         return
