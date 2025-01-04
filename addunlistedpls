@@ -83,7 +83,7 @@ local SelectedWeapon = "Nagi"
 SpecConnection = Player.Backpack.ChildAdded:Connect(function(child)
     if child.Name == SelectedWeapon then
         warn("Weapon: "..Counter2)
-        WeaponConnection:Disconnect()
+        SpecConnection:Disconnect()
         return
     end
     if Character.RankSystem.Yen.Value < 300000 then
