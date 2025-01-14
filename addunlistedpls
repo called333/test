@@ -26,6 +26,7 @@ local function CopySlot()
 end
 local ColorRemote = Rerolls:WaitForChild("aurareroll")
 local SpecRemote = Rerolls:WaitForChild("specreroll")
+local FlowBuffRemote = Rerolls:WaitForChild("buffreroll")
 
 local DesiredColor = Color3.new(0, 0, 0)
 local DesiredColorRange = 3
@@ -36,6 +37,7 @@ local PlayerColor = {
 }
 local ColorConnection
 local SpecConnection
+local FlowConnection
 
 local function ColorCheck()
     local DesiredColorMin = Color3.fromRGB(DesiredColor.R - DesiredColorRange, DesiredColor.G - DesiredColorRange, DesiredColor.B - DesiredColorRange)
@@ -45,12 +47,14 @@ local function ColorCheck()
            math.clamp(GV, DesiredColorMin.G, DesiredColorMax.G) == GV and 
            math.clamp(BV, DesiredColorMin.B, DesiredColorMax.B) == BV
 end
+
 --
 repeat task.wait(.1) until Character:WaitForChild("RankSystem"):WaitForChild("Yen").Value > 300000
 task.wait(2.5)
 --
 local Counter1 = 0
 local Counter2 = 0
+local Counter3 = 0
 
 local function DisconnectAll()
     if ColorConnection then
@@ -61,8 +65,32 @@ local function DisconnectAll()
         SpecConnection:Disconnect()
         SpecConnection = nil
     end
+    if FlowType then
+        FlowType:Disconnect()
+        FlowType = nil
+    end
 end
 
+local FlowType = "hitbox"
+--List = {"speed", "power", "hitbox", "cooldown", "stamina"},
+local PBuff = Character.AuraColour.Buff
+FlowConnection = PBuff:GetAttributeChangedSignal("BuffValue"):Connect(function()
+    if PBuff:GetAttribute("BuffValue") >= 1.495 and PBuff.Value == FlowType then
+        warn("Flow: "..Counter3)
+        warn(PBuff:GetAttribute("BuffValue"))
+        FlowConnection:Disconnect()
+        return
+    end
+    if Character.RankSystem.Yen.Value < 100000 then
+        DisconnectAll()
+        CopySlot()
+        return
+    end
+    Counter3 += 1
+    FlowBuffRemote:FireServer()
+end)
+FlowBuffRemote:FireServer()
+--[[
 ColorConnection = PlayerColor.R:GetPropertyChangedSignal("Value"):Connect(function()
     if ColorCheck() then
         warn("Color: "..Counter1)
@@ -78,7 +106,6 @@ ColorConnection = PlayerColor.R:GetPropertyChangedSignal("Value"):Connect(functi
     Counter1 += 1
     ColorRemote:FireServer()
 end)
---[[
 local SelectedWeapon = "Nagi"
 SpecConnection = Player.Backpack.ChildAdded:Connect(function(child)
     if child.Name == SelectedWeapon then
@@ -95,5 +122,5 @@ SpecConnection = Player.Backpack.ChildAdded:Connect(function(child)
     SpecRemote:FireServer()
 end)
 
-SpecRemote:FireServer()]]--
-ColorRemote:FireServer()
+SpecRemote:FireServer()
+ColorRemote:FireServer()]]--
