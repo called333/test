@@ -71,6 +71,7 @@ local function DisconnectAll()
     end
 end
 
+--[[
 local FlowType = "hitbox"
 --List = {"speed", "power", "hitbox", "cooldown", "stamina"},
 local PBuff = Character.AuraColour.Buff
@@ -90,7 +91,7 @@ FlowConnection = PBuff:GetAttributeChangedSignal("BuffValue"):Connect(function()
     FlowBuffRemote:FireServer()
 end)
 FlowBuffRemote:FireServer()
---[[
+]]--
 ColorConnection = PlayerColor.R:GetPropertyChangedSignal("Value"):Connect(function()
     if ColorCheck() then
         warn("Color: "..Counter1)
@@ -98,7 +99,7 @@ ColorConnection = PlayerColor.R:GetPropertyChangedSignal("Value"):Connect(functi
         ColorConnection:Disconnect()
         return
     end
-    if Character.RankSystem.Yen.Value < 300000 then
+    if Character.RankSystem.Yen.Value < 600000 then
         DisconnectAll()
         CopySlot()
         return
@@ -106,6 +107,7 @@ ColorConnection = PlayerColor.R:GetPropertyChangedSignal("Value"):Connect(functi
     Counter1 += 1
     ColorRemote:FireServer()
 end)
+--[[
 local SelectedWeapon = "Nagi"
 SpecConnection = Player.Backpack.ChildAdded:Connect(function(child)
     if child.Name == SelectedWeapon then
