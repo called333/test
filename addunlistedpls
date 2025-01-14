@@ -107,6 +107,7 @@ ColorConnection = PlayerColor.R:GetPropertyChangedSignal("Value"):Connect(functi
     Counter1 += 1
     ColorRemote:FireServer()
 end)
+ColorRemote:FireServer()
 --[[
 local SelectedWeapon = "Nagi"
 SpecConnection = Player.Backpack.ChildAdded:Connect(function(child)
@@ -124,5 +125,4 @@ SpecConnection = Player.Backpack.ChildAdded:Connect(function(child)
     SpecRemote:FireServer()
 end)
 
-SpecRemote:FireServer()
-ColorRemote:FireServer()]]--
+SpecRemote:FireServer()]]--
