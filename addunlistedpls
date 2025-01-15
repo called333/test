@@ -27,7 +27,9 @@ end
 local ColorRemote = Rerolls:WaitForChild("aurareroll")
 local SpecRemote = Rerolls:WaitForChild("specreroll")
 local FlowBuffRemote = Rerolls:WaitForChild("buffreroll")
-
+--
+local AC = Character:WaitForChild("AuraColour")
+--
 local DesiredColor = Color3.new(0, 0, 0)
 local DesiredColorRange = 5
 local PlayerColor = {
