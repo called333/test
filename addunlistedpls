@@ -12,6 +12,9 @@ local Backpack = Player:WaitForChild("Backpack")
 local TeleportService = game:GetService("TeleportService")
 local Lobby = 12276235857
 --
+repeat task.wait(.1) until Character:WaitForChild("RankSystem"):WaitForChild("Yen").Value > 300000
+task.wait(2.5)
+--
 local Initiated = false
 local function CopySlot()
     if Initiated then return end
@@ -49,10 +52,6 @@ local function ColorCheck()
            math.clamp(GV, DesiredColorMin.G, DesiredColorMax.G) == GV and 
            math.clamp(BV, DesiredColorMin.B, DesiredColorMax.B) == BV
 end
-
---
-repeat task.wait(.1) until Character:WaitForChild("RankSystem"):WaitForChild("Yen").Value > 300000
-task.wait(2.5)
 --
 local Counter1 = 0
 local Counter2 = 0
