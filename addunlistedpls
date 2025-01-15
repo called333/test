@@ -29,7 +29,7 @@ local SpecRemote = Rerolls:WaitForChild("specreroll")
 local FlowBuffRemote = Rerolls:WaitForChild("buffreroll")
 
 local DesiredColor = Color3.new(0, 0, 0)
-local DesiredColorRange = 3
+local DesiredColorRange = 5
 local PlayerColor = {
     R = Character.AuraColour.Red,
     G = Character.AuraColour.Green,
@@ -99,7 +99,7 @@ ColorConnection = PlayerColor.R:GetPropertyChangedSignal("Value"):Connect(functi
         ColorConnection:Disconnect()
         return
     end
-    if Character.RankSystem.Yen.Value < 600000 then
+    if Character.RankSystem.Yen.Value < 500000 then
         DisconnectAll()
         CopySlot()
         return
