@@ -71,8 +71,8 @@ local function DisconnectAll()
         FlowType = nil
     end
 end
---[[
-local FlowType = "speed"
+
+local FlowType = "cooldown"
 --List = {"speed", "power", "hitbox", "cooldown", "stamina"},
 local PBuff = Character.AuraColour.Buff
 FlowConnection = PBuff:GetAttributeChangedSignal("BuffValue"):Connect(function()
@@ -91,7 +91,7 @@ FlowConnection = PBuff:GetAttributeChangedSignal("BuffValue"):Connect(function()
     FlowBuffRemote:FireServer()
 end)
 FlowBuffRemote:FireServer()
-]]--
+
 --[[
 ColorConnection = PlayerColor.R:GetPropertyChangedSignal("Value"):Connect(function()
     if ColorCheck() then
@@ -110,7 +110,7 @@ ColorConnection = PlayerColor.R:GetPropertyChangedSignal("Value"):Connect(functi
 end)
 ColorRemote:FireServer()
 ]]--
-local SelectedWeapon = "King"
+local SelectedWeapon = "Serpent"
 SpecConnection = Player.Backpack.ChildAdded:Connect(function(child)
     if child.Name == SelectedWeapon then
         warn("Weapon: "..Counter2)
