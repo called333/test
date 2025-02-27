@@ -76,7 +76,7 @@ local FlowType = "cooldown"
 --List = {"speed", "power", "hitbox", "cooldown", "stamina"},
 local PBuff = Character.AuraColour.Buff
 FlowConnection = PBuff:GetAttributeChangedSignal("BuffValue"):Connect(function()
-    if PBuff:GetAttribute("BuffValue") >= 1.495 and PBuff.Value == FlowType then
+    if tonumber(PBuff:GetAttribute("BuffValue")) >= 1.495 and PBuff.Value == FlowType then
         warn("Flow: "..Counter3)
         warn(PBuff:GetAttribute("BuffValue"))
         FlowConnection:Disconnect()
@@ -90,7 +90,7 @@ FlowConnection = PBuff:GetAttributeChangedSignal("BuffValue"):Connect(function()
     Counter3 += 1
     FlowBuffRemote:FireServer()
 end)
-if not (PBuff:GetAttribute("BuffValue") >= 1.495 and PBuff.Value == FlowType) then
+if not (tonumber(PBuff:GetAttribute("BuffValue")) >= 1.495 and PBuff.Value == FlowType) then
 	FlowBuffRemote:FireServer()
 end
 --[[
