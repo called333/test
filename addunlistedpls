@@ -90,8 +90,9 @@ FlowConnection = PBuff:GetAttributeChangedSignal("BuffValue"):Connect(function()
     Counter3 += 1
     FlowBuffRemote:FireServer()
 end)
-FlowBuffRemote:FireServer()
-
+if not (PBuff:GetAttribute("BuffValue") >= 1.495 and PBuff.Value == FlowType) then
+	FlowBuffRemote:FireServer()
+end
 --[[
 ColorConnection = PlayerColor.R:GetPropertyChangedSignal("Value"):Connect(function()
     if ColorCheck() then
@@ -108,7 +109,9 @@ ColorConnection = PlayerColor.R:GetPropertyChangedSignal("Value"):Connect(functi
     Counter1 += 1
     ColorRemote:FireServer()
 end)
-ColorRemote:FireServer()
+if not ColorCheck() then
+	ColorRemote:FireServer()
+end
 ]]--
 local SelectedWeapon = "Serpent"
 SpecConnection = Player.Backpack.ChildAdded:Connect(function(child)
@@ -126,4 +129,6 @@ SpecConnection = Player.Backpack.ChildAdded:Connect(function(child)
     SpecRemote:FireServer()
 end)
 
-SpecRemote:FireServer()
+if not Player.Backpack:FindFirstChild(SelectedWeapon) then
+	SpecRemote:FireServer()
+end
