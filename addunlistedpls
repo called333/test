@@ -117,7 +117,7 @@ SpecConnection = Player.Backpack.ChildAdded:Connect(function(child)
         SpecConnection:Disconnect()
         return
     end
-    if Character.RankSystem.Yen.Value < 600000 then
+    if Character.RankSystem.Yen.Value < 100000 then
         DisconnectAll()
         CopySlot()
         return
