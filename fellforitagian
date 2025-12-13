@@ -1,0 +1,131 @@
+if not game:IsLoaded() then game.Loaded:Wait() end
+--
+if game.PlaceId ~= 133884972346775 then
+    warn(game.PlaceId)
+    return
+end
+--
+queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/called333/test/refs/heads/main/fellforitagian"))()]])
+--
+local Player = game.Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local Remotes = game:GetService("ReplicatedStorage"):WaitForChild("remotes")
+
+for _ = 1, 5 do
+    task.wait(1)
+    Character.PrimaryPart.CFrame = CFrame.new(-760, -194, -235)
+end
+--[[
+task.spawn(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+end)
+]]--
+task.spawn(function()
+    while task.wait(4) do
+        Remotes:WaitForChild("useAbility"):FireServer("tornado")
+    end
+end)
+task.spawn(function()
+    local local_player = game:GetService("Players").LocalPlayer
+    local workspace = game:GetService("Workspace")
+
+    getgenv().aura_settings = {
+        enabled = not (aura_settings and aura_settings.enabled),
+        delay = 0 -- delay to hitting nearby enemies
+    }
+    warn(aura_settings.enabled)
+
+    function current_damage()
+        return 9e99
+    end
+
+    local RemoteHit = Remotes:WaitForChild("onHit")
+    --local RemoteSwing = Remotes:WaitForChild("swing")
+
+    local WhitelistedNames = {
+        "kori", "dragon", "korl"
+    }
+    local BlacklistedNames = {
+        "kori_rig", "koribossfight"
+    }
+    local AllyNames = {
+        "shroom"
+    }
+    local function CheckSpecialEnemy(Model)
+        local ModelName = Model.Name:lower()
+        for _, MatchString in next, WhitelistedNames do
+            if ModelName:find(MatchString) and not table.find(BlacklistedNames, ModelName) then
+                return true
+            end
+        end
+    end
+    local function CheckAlly(Model)
+        local ModelName = Model.Name:lower()
+        for _, MatchString in next, AllyNames do
+            if ModelName:find(MatchString) then
+                return true
+            end
+        end
+    end
+
+    if aura_settings.enabled then
+        repeat
+            for _, v in ipairs(workspace:GetChildren()) do
+                local IsKori = CheckSpecialEnemy(v)
+                local IsAlly = CheckAlly(v)
+                if v ~= local_player.Character and v:IsA("Model") and not IsAlly then
+                    local TargetHuman = v:FindFirstChildOfClass("Humanoid") or (v:FindFirstChildOfClass("Model") and v:FindFirstChildOfClass("Model"):FindFirstChildOfClass("Humanoid"))
+                    if IsKori or TargetHuman and TargetHuman.Health > 0 then
+                        if IsKori or v:GetAttribute("hadEntrance") and v:FindFirstChild("Health") then
+                            --warn(TargetHuman, v)
+                            RemoteHit:FireServer(TargetHuman, current_damage(), {}, 0)
+                        end
+                    end
+                end
+            end
+            task.wait(aura_settings.delay)
+        until not aura_settings.enabled
+    end
+end)
+task.delay(1, function()
+    task.spawn(function()
+        if aura_settings and aura_settings.enabled then
+            while aura_settings.enabled do
+                Character.PrimaryPart.CFrame = CFrame.new(-735, -194, -232)
+                task.wait(1)
+            end
+        end
+    end)
+    task.spawn(function()
+        if aura_settings and aura_settings.enabled then
+            while aura_settings.enabled do
+                Remotes:WaitForChild("plrUpgrade"):FireServer(1)
+                Remotes:WaitForChild("gameEndVote"):FireServer("replay")
+                Character.PrimaryPart.CFrame = CFrame.new(-735, -194, -232)
+                task.wait(3.3)
+            end
+        end
+    end)
+    task.spawn(function()
+        if aura_settings and aura_settings.enabled then
+            local VIM = cloneref(game:GetService("VirtualInputManager"))
+            local UIS = cloneref(game:GetService("UserInputService"))
+
+            local XLoc, YLoc = 927, 533
+            print("Starting anti afk")
+            while aura_settings.enabled do
+                VIM:SendMouseButtonEvent(XLoc, YLoc, 0, true, game, 0)
+                VIM:SendMouseButtonEvent(XLoc, YLoc, 0, false, game, 0)
+                task.wait(3)
+            end
+            print("Anti afk disabled")
+        end
+    end)
+
+    for _, v in ipairs(game.ReplicatedStorage:GetDescendants()) do
+        if v.Name:lower():find("effect") then
+            warn(v, v.ClassName)
+            v:Destroy()
+        end
+    end
+end)
