@@ -21,7 +21,7 @@ task.spawn(function()
 end)
 ]]--
 task.spawn(function()
-    while task.wait(4) do
+    while task.wait(3.25) do
         Remotes:WaitForChild("useAbility"):FireServer("tornado")
     end
 end)
