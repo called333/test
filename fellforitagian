@@ -21,7 +21,7 @@ task.spawn(function()
 end)
 ]]--
 task.spawn(function()
-    while task.wait(3.25) do
+    while task.wait(3) do
         Remotes:WaitForChild("useAbility"):FireServer("tornado")
     end
 end)
@@ -31,7 +31,7 @@ task.spawn(function()
 
     getgenv().aura_settings = {
         enabled = not (aura_settings and aura_settings.enabled),
-        delay = 0 -- delay to hitting nearby enemies
+        delay = 0.05 -- delay to hitting nearby enemies
     }
     warn(aura_settings.enabled)
 
