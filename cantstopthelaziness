@@ -82,6 +82,7 @@ task.delay(ExecDelay, function()
         end
     end
     HRP.CFrame = CFrame.new(-4882, 44, -1471)
+    task.wait(1.25)
     --
     local TeleportService = cloneref(game:GetService("TeleportService"))
     local HttpService = cloneref(game:GetService("HttpService"))
