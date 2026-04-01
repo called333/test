@@ -9,6 +9,7 @@ if not game.Players.LocalPlayer.Character then
 end
 --
 task.delay(ExecDelay, function()
+    --[[
     local g = getinfo or debug.getinfo
     local d = false
     local h = {}
@@ -66,6 +67,7 @@ task.delay(ExecDelay, function()
     end))
 
     setthreadidentity(7)
+    ]]--
     if game.ReplicatedStorage:FindFirstChild("Strike") then
         game.ReplicatedStorage.Strike:Destroy()
     end
