@@ -32,7 +32,7 @@ if tonumber(Time[3]) < 10 and tonumber(Time[2]) > 0 then
     if Trader then
         warn("TRADER!!!!!")
         
-        local Body = Trader.WorldPivot
+        local Body = Trader.HumanoidRootPart.CFrame
         local Proximity = Trader:FindFirstChild("ProximityPrompt", true)
         local function GetDialogue()
             for _ = 1, 1000 do
