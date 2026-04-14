@@ -74,7 +74,7 @@ if tonumber(Time[3]) < 10 and tonumber(Time[2]) > 0 then
     end
 end
 local End = tick()
-if End - Start < 7.5 then
+if End - Start < 15 then
     task.wait(End - Start)
 end
 
