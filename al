@@ -7,7 +7,9 @@ local ToBuy = {
     "Phoenix Tear",
     "Lineage Shard",
     "Corealloy Manablade",
-    "Invisibility"
+    "Corealloy Manaclaws",
+    "Corealloy ManaDagger",
+    "Corealloy Manadagger",
 }
 local Players = game.Players
 local Player = Players.LocalPlayer
