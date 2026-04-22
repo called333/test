@@ -1,0 +1,154 @@
+if not game:IsLoaded() then game.Loaded:Wait() end
+--
+queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/called333/test/refs/heads/main/seraphon"))()]])
+--
+
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local VirtualUser = game:GetService("VirtualUser")
+
+if not Player:FindFirstChild("Loaded") then
+    Player:WaitForChild("Loaded")
+end
+
+local function AntiAFK()
+    task.spawn(function()
+        do
+            while task.wait(30) do
+                VirtualUser:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+                task.wait(1)
+                VirtualUser:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+            end
+        end
+    end)
+end
+local function ActivateDoor()
+    Player.Character.HumanoidRootPart.Position = Vector3.new(716, 3431, -5674)
+    task.wait(1)
+    fireproximityprompt(workspace.InteractDoor.ProximityPrompt)
+end
+local function AutoQTE()
+    local Info = game.ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Information")
+
+    local CombatFunc = Info:WaitForChild("RemoteFunction")
+    local EnviroFunc = Info:WaitForChild("EnviroEffects")
+    local ClonedCombatFunc = cloneref(CombatFunc)
+
+    local AutoQTEEvent = ClonedCombatFunc.OnClientEvent:Connect(function(a1, a2)
+        warn("Init: ", a1, a2)
+        if a1 == "DodgeMinigame" then
+            for _ = 1, 3 do
+                ClonedCombatFunc:FireServer({true, true}, a1)
+                task.wait(0.1)
+            end
+        elseif a1:find("QTE") then
+            for _ = 1, 3 do
+                ClonedCombatFunc:FireServer(true, a1)
+                task.wait(0.1)
+            end
+        end
+    end)
+
+    CombatFunc.Parent = game
+    EnviroFunc.Parent = game
+
+    if hookinstance then
+        hookinstance(CombatFunc, Instance.new("RemoteEvent"))
+        hookinstance(EnviroFunc, Instance.new("RemoteEvent"))
+    end
+    --
+    if not shared.IsExecuted01 then
+        shared.IsExecuted01 = true
+        for _, Object in ipairs(workspace:GetDescendants()) do
+            if Object.Name:lower() == "void" then
+                spawn(function()
+                    print("DELETED VOID")
+                    Object:Destroy()
+                end)
+            end
+        end
+        workspace.DescendantAdded:Connect(function(Object) --< replace w getnilinstances later
+            if Object.Name:lower() == "void" then
+                spawn(function()
+                    warn("DELETED VOID")
+                    Object:Destroy()
+                end)
+            end
+        end)
+
+        local Lighting = game:GetService("Lighting")
+        for _, Object in ipairs(Lighting:GetDescendants()) do
+            Object:Destroy()
+        end
+        local AmbientColor = Color3.fromRGB(255, 255, 255)
+        Lighting.Ambient = AmbientColor
+        Lighting.OutdoorAmbient = AmbientColor
+        Lighting.ColorShift_Bottom = AmbientColor
+        Lighting.ColorShift_Top = AmbientColor
+        Lighting.Brightness = 1
+
+        for _, UI in ipairs(Player.PlayerGui.Combat:GetChildren()) do
+            local UIName = UI.Name:lower()
+            if UIName:find("qte") or UIName:find("block") or UIName == "go" then
+                UI.Position = UDim2.fromScale(100, 100)
+            end
+        end
+    end
+    return AutoQTEEvent
+end
+--
+local function AutoFight()
+    local Character = Player.Character
+    local Living = workspace.Living
+    local function FindMob()
+        local PlayerFight = Character:FindFirstChild("FightInProgress")
+        if PlayerFight then
+            PlayerFight = PlayerFight.Value
+            for _, Mob in Living:GetChildren() do
+                if not Players:GetPlayerFromCharacter(Mob) then
+                    local MobFight = Mob:FindFirstChild("FightInProgress")
+                    if MobFight and MobFight.Value == PlayerFight then
+                        return Mob
+                    end
+                end
+            end
+        end
+    end
+    local args = {"Attack", "Strike"} -- 3 {["Attacking"] = Model}
+    local Input = game:GetService("ReplicatedStorage"):WaitForChild("PlayerTurnInput")-- :InvokeServer(unpack(args), Model)
+    local AttackType = "Strike" -- "Strike" "Magic Missile"
+    while task.wait(0.25) do
+        local FoundMob = FindMob()
+        if FoundMob then
+            Input:InvokeServer("Attack", "Perennial Canopy", {["Attacking"] = FoundMob})	
+            task.wait(0.1)
+            Input:InvokeServer("Attack", "Stinger", {["Attacking"] = FoundMob})
+            task.wait(0.1)
+            Input:InvokeServer("Attack", "Surprise Package", {["Attacking"] = FoundMob})
+            task.wait(0.1)
+            Input:InvokeServer("Attack", "Enrichment", {["Attacking"] = Character})
+            task.wait(0.1)
+            Input:InvokeServer("Attack", "Expose", {["Attacking"] = FoundMob})
+            task.wait(0.1)
+            Input:InvokeServer("Attack", "Flourish", {["Attacking"] = FoundMob})
+            task.wait(0.1)
+            Input:InvokeServer("Attack", AttackType, {["Attacking"] = FoundMob})
+            task.wait(0.1)
+            Input:InvokeServer("Meditate", false)
+        end
+    end
+end
+local function AcceptRefight()
+    local RefightRemote = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Fight"):WaitForChild("RefightBoss")
+    RefightRemote.OnClientEvent:Connect(function(a1, a2)
+        task.delay(0.5, function()
+            RefightRemote:FireServer(a2.BattleID, "Accept")
+        end)
+    end)
+end
+if AutoQTE() then
+    ActivateDoor()
+    --
+    AcceptRefight()
+    AutoFight()
+end
