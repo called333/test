@@ -23,7 +23,7 @@ local function AntiAFK()
     end)
 end
 local function ActivateDoor()
-    Player.Character.HumanoidRootPart.Position = Vector3.new(716, 3431, -5674)
+    Player.Character.HumanoidRootPart.CFrame = CFrame.new(716, 3431, -5674)
     task.wait(1)
     fireproximityprompt(workspace.InteractDoor.ProximityPrompt)
 end
