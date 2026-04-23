@@ -23,9 +23,13 @@ local function AntiAFK()
     end)
 end
 local function ActivateDoor()
-    Player.Character.HumanoidRootPart.CFrame = CFrame.new(716, 3431, -5674)
-    task.wait(1)
-    fireproximityprompt(workspace.InteractDoor.ProximityPrompt)
+    task.spawn(function()
+        for _ = 1, 40 do
+            Player.Character.HumanoidRootPart.CFrame = CFrame.new(716, 3431, -5674)
+            task.wait(0.25)
+            fireproximityprompt(workspace.InteractDoor.ProximityPrompt)
+        end
+    end)
 end
 local function AutoQTE()
     local Info = game.ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Information")
