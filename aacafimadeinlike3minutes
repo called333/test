@@ -1,0 +1,27 @@
+local Remotes = game.ReplicatedStorage.Remotes
+local Enemies = workspace.Enemies
+
+local TurnDecision = Remotes.TurnDecision
+local VotingEvent = Remotes.VotingEvent
+
+local StaticVotes = {
+	{"Rest"},
+	{"Encounter", "Scavenge"},
+	{"Encounter", "ShortRest"},
+	{"SceneClient", "Abandoned Camp"},
+	{"SceneClient", "Rest"},
+	{"Scene", "Continue"}
+}
+workspace.Restmap.ChildAdded:Connect(function(Child)
+	if Child.Name == "GameOver" then
+		Remotes.ReplayEvent:FireServer()
+	end
+end)
+while task.wait(0.25) do
+	VotingEvent:FireServer("Start Game")
+	--
+	TurnDecision:FireServer("Ability", Enemies:FindFirstChildOfClass("Model"), "Strike", false)
+	for Ind = 1, #StaticVotes do
+		VotingEvent:FireServer(unpack(StaticVotes[Ind]))
+	end
+end
