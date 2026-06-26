@@ -12,25 +12,36 @@ local Enemies = workspace.Enemies
 
 local TurnDecision = Remotes.TurnDecision
 local VotingEvent = Remotes.VotingEvent
-
+--
+local function TargetMob()
+    local EnemiesTable = Enemies:GetChildren()
+    table.sort(EnemiesTable, function(P1, P2)
+        return ((P1:GetAttribute("HP") > 0 and P1:GetAttribute("HP") < P1:GetAttribute("MaxHP") and P1:GetAttribute("HP")) or 9e99) < ((P2:GetAttribute("HP") > 0 and P2:GetAttribute("HP") < P2:GetAttribute("MaxHP") and P2:GetAttribute("HP")) or 9e99)
+    end)
+    return EnemiesTable[1]
+end
+--
 local StaticVotes = {
-	{"Rest"},
-	{"Encounter", "Scavenge"},
-	{"Encounter", "ShortRest"},
-	{"SceneClient", "Abandoned Camp"},
-	{"SceneClient", "Rest"},
-	{"Scene", "Continue"}
+    {"Rest"},
+    {"Encounter", "Scavenge"},
+    {"Encounter", "ShortRest"},
+    {"SceneClient", "Abandoned Camp"},
+    {"SceneClient", "Rest"},
+    {"Scene", "Continue"}
 }
 workspace.Restmap.ChildAdded:Connect(function(Child)
-	if Child.Name == "GameOver" then
-		Remotes.ReplayEvent:FireServer()
-	end
+    if Child.Name == "GameOver" then
+        Remotes.ReplayEvent:FireServer()
+    end
 end)
 while task.wait(0.25) do
-	VotingEvent:FireServer("Start Game")
-	--
-	TurnDecision:FireServer("Ability", Enemies:FindFirstChildOfClass("Model"), "Strike", false)
-	for Ind = 1, #StaticVotes do
-		VotingEvent:FireServer(unpack(StaticVotes[Ind]))
-	end
+    VotingEvent:FireServer("Start Game")
+    local Target = TargetMob()
+    --
+    if Target then
+        TurnDecision:FireServer("Ability", Target, "Strike", false)
+    end
+    for Ind = 1, #StaticVotes do
+        VotingEvent:FireServer(unpack(StaticVotes[Ind]))
+    end
 end
