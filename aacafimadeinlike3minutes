@@ -21,6 +21,11 @@ local function TargetMob()
     return EnemiesTable[1]
 end
 --
+local StaticAttack = {
+	"Flame Bolt",
+	"Shoot",
+	"Strike",
+}
 local StaticVotes = {
     {"Rest"},
     {"Encounter", "Scavenge"},
@@ -39,8 +44,11 @@ while task.wait(0.25) do
     local Target = TargetMob()
     --
     if Target then
-        TurnDecision:FireServer("Ability", Target, "Strike", false)
-    end
+			for Ind = 1, #StaticAttack do
+				TurnDecision:FireServer("Ability", Target, StaticAttack[Ind], false)
+				task.wait(0.05)
+			end
+		end
     for Ind = 1, #StaticVotes do
         VotingEvent:FireServer(unpack(StaticVotes[Ind]))
     end
